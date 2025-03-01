@@ -16,6 +16,6 @@ const router = express.Router()
 router.post('/register', validateUser, handleValidationErrors, registerUser)
 router.post('/login', loginUser)
 router.get('/profile', authUser, authProfile)
-router.get('/logout', authUser, logoutUser)
+router.post('/logout', authUser, logoutUser)
 
 export default router

@@ -8,7 +8,7 @@ import userRoutes from './Routes/User.routes.js'
 const app = express()
 
 const corsOptions = {
-    origin: 'http://localhost:5173', // Adjust with your frontend URL
+    origin: 'http://localhost:5174', // Adjust with your frontend URL
     credentials: true, // Allow credentials (cookies, Authorization headers)
 }
 
@@ -22,8 +22,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/users', userRoutes)
 
 
-app.get('/', (req, res) => {
-    res.send('Hello World')
-})
+
+
 
 export { app }

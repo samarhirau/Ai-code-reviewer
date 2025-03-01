@@ -1,0 +1,11 @@
+
+
+# Dependency directories
+node_modules/
+BackEnd/node_modules/
+FrontEnd/node_modules/
+
+# Build directories
+dist/
+./BackEnd/.env
+./FrontEnd/dist

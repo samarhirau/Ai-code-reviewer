@@ -13,9 +13,17 @@ const registerUser = async (req, res) => {
         await newUser.save()
 
         const token = newUser.toGenerateAuthToken()
+
+        // ✅ Token ko cookie me store karna
+        res.cookie("token", token, {
+            httpOnly: true,   // XSS attack se bachata hai
+            secure: process.env.NODE_ENV === "production", // HTTPS ke liye
+            sameSite: "Strict",
+            maxAge: 24 * 60 * 60 * 1000, // 1 din ke liye valid
+        })
+
         res.status(201).json({
             message: 'User registered successfully!',
-            token,
             newUser,
         })
     } catch (error) {
@@ -31,6 +39,7 @@ const registerUser = async (req, res) => {
         })
     }
 }
+
 
 // login user
 
@@ -52,15 +61,6 @@ const loginUser = async (req, res) => {
 
         const token = user.toGenerateAuthToken()
 
-        // Set cookie before sending the response
-        // res.cookie('token', token);
-        // After successful login response
-
-        // {
-        //     httpOnly: true, // Ensures cookie is not accessible via JavaScript
-        //     secure: process.env.NODE_ENV === 'production', // Send only over HTTPS in production
-        //     maxAge: 24 * 60 * 60 * 1000, // Cookie expiration in milliseconds (e.g., 1 day)
-        // }
         res.cookie('token', token, {
             httpOnly: true, // Prevents access to cookie via JavaScript
             secure: process.env.NODE_ENV === 'production', // Ensures it's sent over HTTPS in production
@@ -91,14 +91,39 @@ const authProfile = async (req, res) => {
     })
 }
 
+// const logoutUser = async (req, res) => {
+//     res.clearCookie('token')
+
+//     const token = req.cookies.token || req.headers.authorization.split(' ')[1]
+
+//     const blacklistedToken = new BlacklistedToken({ token })
+//     await blacklistedToken.save()
+//     res.status(200).json({ message: 'User logged out successfully!' })
+// }
+
 const logoutUser = async (req, res) => {
-    res.clearCookie('token')
+    try {
+        const token = req.cookies.token || (req.headers.authorization ? req.headers.authorization.split(' ')[1] : null);
 
-    const token = req.cookies.token || req.headers.authorization.split(' ')[1]
+        if (!token) {
+            return res.status(400).json({ message: "No token provided!" });
+        }
 
-    const blacklistedToken = new BlacklistedToken({ token })
-    await blacklistedToken.save()
-    res.status(200).json({ message: 'User logged out successfully!' })
-}
+        await new BlacklistedToken({ token }).save();
+
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production", // Secure cookie for production
+            sameSite: "Strict"
+        });
+
+        res.status(200).json({ message: "User logged out successfully!" });
+
+    } catch (error) {
+        console.error("Logout Error:", error.message);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
 
 export { registerUser, loginUser, authProfile, logoutUser }
