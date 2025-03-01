@@ -1,11 +1,52 @@
-
-
-# Dependency directories
+# Node.js dependencies
 node_modules/
 BackEnd/node_modules/
 FrontEnd/node_modules/
 
 # Build directories
 dist/
-./BackEnd/.env
-./FrontEnd/dist
+FrontEnd/dist/
+BackEnd/dist/
+
+# Logs & Debugging files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment Variables (Secrets)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+BackEnd/.env
+FrontEnd/.env
+
+# Temporary files
+*.tmp
+*.log
+*.cache
+.DS_Store
+Thumbs.db
+
+# Editor & OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+
+# Git ignore rule for any API keys accidentally committed
+**/secrets/
+secrets.env
+
+# Ignore compiled TypeScript files (if applicable)
+*.tsbuildinfo
+
+# Ignore coverage reports
+coverage/
+.nyc_output/
