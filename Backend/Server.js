@@ -1,8 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express'
 import path from 'path'
-
-
 import { app } from './app.js'
 import connectDB from './DB/DB.js'
 
