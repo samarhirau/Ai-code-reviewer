@@ -6,10 +6,11 @@ import Signup from "./components/Auth/Signup";
 import Forgot from "./components/Auth/Forgot";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AuthProvider from './Context/AuthContext.jsx';
 
 const App = () => {
   return (
-
+    <AuthProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -27,6 +28,7 @@ const App = () => {
           />
         </Routes>
       </Router>
+      </AuthProvider>
 
   );
 };

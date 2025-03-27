@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 
 const Signup = () => {
@@ -8,6 +9,7 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const { signup } = useContext(AuthContext);
 
+  const navigate = useNavigate();
 
 
   const handleSubmit = async (e) => {
@@ -19,13 +21,13 @@ const Signup = () => {
     }
   
     try {
-      console.log("Submitting:", { fullName, email, password }); // Debugging
-      const response = await signup(fullName, email, password);
-      console.log("✅ Signup successful:", response);
+      await signup(fullName, email, password);
+      navigate("/dashboard"); // ✅ Navigate after user is set
     } catch (error) {
       console.error("❌ Signup failed:", error.message);
     }
   };
+  
 
 
   return (

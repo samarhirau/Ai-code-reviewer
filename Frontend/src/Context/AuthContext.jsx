@@ -5,10 +5,18 @@ export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    // 🔥 Check if user is stored in localStorage
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+    try {
+      const storedUser = localStorage.getItem("user");
+      return storedUser && storedUser !== "undefined" && storedUser !== "null"
+        ? JSON.parse(storedUser)
+        : null;
+    } catch (error) {
+      console.error("Error parsing user from localStorage:", error);
+      return null;
+    }
   });
+  
+  
 
   const [loading, setLoading] = useState(true);
 
@@ -16,20 +24,41 @@ const AuthProvider = ({ children }) => {
     fetchProfile();
   }, []);
 
+  // const signup = async (fullName, email, password) => {
+  //   const response = await fetch("/api/users/register", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ fullName, email, password }, { withCredentials: true }),
+  //   });
+
+  //   if (!response.ok) {
+  //     const errorData = await response.json();
+  //     throw new Error(errorData.message || "Signup failed");
+  //   }
+
+  //   return response.json();
+  // };
   const signup = async (fullName, email, password) => {
     const response = await fetch("/api/users/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fullName, email, password }, { withCredentials: true }),
+      body: JSON.stringify({ fullName, email, password }),
+      credentials: "include",
     });
-
+  
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Signup failed");
     }
-
-    return response.json();
+  
+    const data = await response.json();
+    setUser(data.user);
+    localStorage.setItem("user", JSON.stringify(data.user));
+    return data;
   };
+  
+  
+
 
   const login = async (email, password) => {
     try {
@@ -74,6 +103,13 @@ const AuthProvider = ({ children }) => {
       console.error("Error during logout:", error.message);
     }
   };
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) setUser(JSON.parse(storedUser));
+    setLoading(false);
+  }, []);
+
   
   return (
     <AuthContext.Provider value={{ user, signup, login, logout, loading }}>
