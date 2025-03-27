@@ -1,17 +1,15 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import dotenv from 'dotenv';
+import('dotenv').then(dotenv => dotenv.config());
+
 import express from 'express'
 import path from 'path'
 import { app } from './app.js'
 import connectDB from './DB/DB.js'
 
 // dotenv.config();
-const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: `${__dirname}/.env` });
+
 
 const Port = process.env.PORT || 5000
-// const __dirname = path.resolve();
+const __dirname = path.resolve();
 
 
 if (process.env.NODE_ENV === "production") {
