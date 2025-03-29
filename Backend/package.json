@@ -4,6 +4,10 @@
   "description": "Backend for AI Code Review",
   "main": "Server.js",
   "type": "module",
+  "engines": {
+  "node": "22.x"
+},
+
   "scripts": {
     "start": "node Server.js",
     "dev": "nodemon Server.js",
