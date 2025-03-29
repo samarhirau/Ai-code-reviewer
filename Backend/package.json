@@ -12,7 +12,7 @@
   "scripts": {
     "start": "node Server.js",
     "dev": "nodemon Server.js",
-    "build": "npm install"
+  "build": "npm install --omit=dev && echo 'Dependencies installed'"
   },
   "keywords": [],
   "author": "Samar Hirau",
