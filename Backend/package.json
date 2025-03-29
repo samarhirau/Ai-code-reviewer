@@ -12,7 +12,7 @@
   "scripts": {
     "start": "node Server.js",
     "dev": "nodemon Server.js",
-    "build": "echo 'No build step needed'",
+    "build": "npm install",
     "postinstall": "npm install"
   },
   "keywords": [],
