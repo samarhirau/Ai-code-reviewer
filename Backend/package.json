@@ -12,7 +12,8 @@
   "scripts": {
     "start": "node Server.js",
     "dev": "nodemon Server.js",
-    "build": "echo 'No build step needed'"
+    "build": "echo 'No build step needed'",
+    "postinstall": "npm install"
   },
   "keywords": [],
   "author": "Samar Hirau",
